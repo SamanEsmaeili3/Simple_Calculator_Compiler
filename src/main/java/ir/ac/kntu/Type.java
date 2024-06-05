@@ -1,0 +1,7 @@
+package src.main.java.ir.ac.kntu;
+
+public enum Type {
+    /*S_POSITIVE_SIGN, S_NEGATIVE_SIGN,*/ S_PLUS, S_MINUS,
+    S_POSITIVE_INT, S_NEGATIVE_INT, S_POSITIVE_DOUBLE, S_NEGATIVE_DOUBLE,
+    S_MULTIPLE, S_DIVIDE, S_OPEN_P, S_CLOSED_P
+}
