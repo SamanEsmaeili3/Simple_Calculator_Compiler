@@ -34,10 +34,10 @@ public class Token {
     public String getValue() {
         return "Token{" +
 
-                ", column=" + column +
-                ", type=" + type +
-                ", name=" + value +
-                '}';
+                "column = " + column +
+                ", type = " + type +
+                ", name = " + value +
+                " }";
     }
 
    /* @Override

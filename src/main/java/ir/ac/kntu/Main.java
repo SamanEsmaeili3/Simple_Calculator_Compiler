@@ -12,6 +12,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello world!");
         String input = "4.42 * (524 + 45) + -789 / 11";
+        String input2 = "35 / 11";
         Lexer lexer = new Lexer();
         ArrayList<Token> t = lexer.lexicalAnalyzer(input);
         for (int i = 0; i < t.size(); i++){
