@@ -23,8 +23,8 @@ public class Token {
         this.type = type;
     }
 
-    public Type getType() {
-        return type;
+    public String getType() {
+        return type.toString();
     }
 
     public void setValue(String value) {
