@@ -11,13 +11,20 @@ public class Main {
     public static void main(String[] args) throws Exceptions {
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello world!");
-        String input = "4.42 * ((524 + 46) / 2) - -789 / 11";
+        String input = "4.42 * " +
+                "((524 + 46) / 2) - -789 / 11";
         //search how to print error message
-        String input2 = "35 / 11";
+        //String input2 = "35 / 11";
         Lexer lexer = new Lexer();
         ArrayList<Token> t = lexer.lexicalAnalyzer(input);
-        for (Token token : t) {
-            System.out.println(token.getValue());
+//        for (Token token : t) {
+//            System.out.println(token.getValue());
+//        }
+        Parser parser = new Parser(t);
+        if(parser.parserAnalyzer()){
+            System.out.printf("parsed successfully");
+        }else{
+            System.out.printf("parsing failed");
         }
 
 
