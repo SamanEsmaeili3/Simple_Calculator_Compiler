@@ -8,19 +8,27 @@ public class Parser {
     ArrayList<Rule> grammerlist = grammer.getGrammer();
     private ArrayList<Token> tokens;
     private Stack<String> stack;
-    private Double d1;
-    private Double d2;
+    private Stack<Float> calculator;
+    private Float f1;
+    private Float f2;
     private int i;
     private Token currentToken;
     private Token nextToken;
     private String lastSate;
-    private String result;
     private boolean parsed;
 
     public Parser(ArrayList<Token> tokens) {
         stack = new Stack<>();
+        calculator = new Stack<>();
         this.tokens = tokens;
     }
+
+    public Parser() {
+        stack = new Stack<>();
+        calculator = new Stack<>();
+        tokens = new ArrayList<>();
+    }
+
     public boolean parserAnalyzer() throws Exceptions {
         Token eof = new Token(0, Type.S_EOF, "$");
         int state = 0;
@@ -30,6 +38,10 @@ public class Parser {
         i0();
 
         return parsed;
+    }
+
+    public Float calculatedValue() {
+        return calculator.pop();
     }
 
     private void i0() throws Exceptions {
@@ -44,6 +56,7 @@ public class Parser {
         } else if (currentToken.getType() == "id") {
             stack.push("id");
             stack.push("5");
+            calculator.push(Float.valueOf(currentToken.getValue()));
             i++;
             i5();
         } else if (stack.peek() == "E") {
@@ -66,14 +79,14 @@ public class Parser {
     private void i1() throws Exceptions {
         currentToken = getCurrentToken(i, tokens);
         nextToken = getNextToken(i, tokens);
-        if (stack.peek() == "1") {
+        if (currentToken.getType() == "$" || nextToken.getType() == "$") {
             parsed = true;
         } else if (currentToken.getType() == "+") {
             stack.push("+");
             stack.push("6");
             i++;
             i6();
-        } else if (stack.peek() == "-") {
+        } else if (currentToken.getType() == "-") {
             stack.push("-");
             stack.push("7");
             i++;
@@ -92,9 +105,9 @@ public class Parser {
                 stack.pop();
             }
             stack.pop();
+            setLastSate(stack.peek());
             stack.push("E");
-            stack.push("1");
-            i1();
+            gotLastCaller(lastSate);
         } else if (currentToken.getType() == "*") {
             stack.push("*");
             stack.push("8");
@@ -154,6 +167,7 @@ public class Parser {
             stack.push("id");
             stack.push("5");
             i++;
+            calculator.push(Float.parseFloat(currentToken.getValue()));
             i5();
         } else {
             throw new Exceptions("false input!");
@@ -199,6 +213,7 @@ public class Parser {
         } else if (currentToken.getType() == "id") {
             stack.push("id");
             stack.push("5");
+            calculator.push(Float.parseFloat(currentToken.getValue()));
             i++;
             i5();
         } else {
@@ -224,6 +239,7 @@ public class Parser {
         } else if (currentToken.getType() == "id") {
             stack.push("id");
             stack.push("5");
+            calculator.push(Float.parseFloat(currentToken.getValue()));
             i++;
             i5();
         } else {
@@ -241,6 +257,7 @@ public class Parser {
         } else if (currentToken.getType() == "id") {
             stack.push("id");
             stack.push("5");
+            calculator.push(Float.parseFloat(currentToken.getValue()));
             i++;
             i5();
         } else if (currentToken.getType() == "(") {
@@ -268,6 +285,7 @@ public class Parser {
         } else if (currentToken.getType() == "id") {
             stack.push("id");
             stack.push("5");
+            calculator.push(Float.parseFloat(currentToken.getValue()));
             i++;
             i5();
         } else {
@@ -281,17 +299,17 @@ public class Parser {
 
         if (currentToken.getType() == ")") {
             stack.push(")");
-            stack.push("10");
+            stack.push("15");
             i++;
             i15();
         } else if (currentToken.getType() == "+") {
             stack.push("+");
-            stack.push("10");
+            stack.push("6");
             i++;
             i6();
         } else if (currentToken.getType() == "-") {
             stack.push("-");
-            stack.push("10");
+            stack.push("7");
             i++;
             i7();
         } else {
@@ -311,15 +329,20 @@ public class Parser {
             stack.pop();
             setLastSate(stack.peek());
             stack.push("E");
+
+            f2 = calculator.pop();
+            f1 = calculator.pop();
+            calculator.push(f1 + f2);
+
             gotLastCaller(lastSate);
         } else if (currentToken.getType() == "*") {
             stack.push("*");
-            stack.push("11");
+            stack.push("8");
             i++;
             i8();
         } else if (currentToken.getType() == "/") {
             stack.push("/");
-            stack.push("11");
+            stack.push("9");
             i++;
             i9();
         } else {
@@ -339,15 +362,20 @@ public class Parser {
             stack.pop();
             setLastSate(stack.peek());
             stack.push("E");
+
+            f2 = calculator.pop();
+            f1 = calculator.pop();
+            calculator.push(f1 - f2);
+
             gotLastCaller(lastSate);
         } else if (currentToken.getType() == "*") {
             stack.push("*");
-            stack.push("12");
+            stack.push("8");
             i++;
             i8();
         } else if (currentToken.getType() == "/") {
             stack.push("/");
-            stack.push("12");
+            stack.push("9");
             i++;
             i9();
         } else {
@@ -368,6 +396,11 @@ public class Parser {
             stack.pop();
             setLastSate(stack.peek());
             stack.push("T");
+
+            f2 = calculator.pop();
+            f1 = calculator.pop();
+            calculator.push(f1 * f2);
+
             gotLastCaller(lastSate);
         } else {
             throw new Exceptions("false input!");
@@ -387,6 +420,11 @@ public class Parser {
             stack.pop();
             setLastSate(stack.peek());
             stack.push("T");
+
+            f2 = calculator.pop();
+            f1 = calculator.pop();
+            calculator.push(f1 / f2);
+
             gotLastCaller(lastSate);
         } else {
             throw new Exceptions("false input!");
@@ -535,5 +573,9 @@ public class Parser {
                 i15();
                 break;
         }
+    }
+
+    public void setTokens(ArrayList<Token> tokens) {
+        this.tokens = tokens;
     }
 }

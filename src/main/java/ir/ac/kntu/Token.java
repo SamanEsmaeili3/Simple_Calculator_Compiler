@@ -32,6 +32,11 @@ public class Token {
     }
 
     public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString(){
         return "Token{" +
 
                 "column = " + column +
@@ -39,9 +44,4 @@ public class Token {
                 ", name = " + value +
                 " }";
     }
-
-   /* @Override
-    public String toString(){
-        return
-    }*/
 }

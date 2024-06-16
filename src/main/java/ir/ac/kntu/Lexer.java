@@ -1,10 +1,8 @@
 package src.main.java.ir.ac.kntu;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
+
 
 public class Lexer {
     private final ArrayList<Token> tokens;
